@@ -227,23 +227,6 @@ nav{position:sticky;top:0;z-index:50;background:rgba(7,7,12,.94);backdrop-filter
 #noResults{display:none;border:2px dashed var(--red);padding:clamp(24px,5vw,40px);text-align:center;font-family:var(--marker);font-size:clamp(16px,3.6vw,22px);color:var(--red);margin-top:20px}
 #noResults.show{display:block}
 
-/* ---------- article modal ---------- */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:100;display:flex;align-items:center;justify-content:center;padding:var(--sp-4);opacity:0;pointer-events:none;transition:opacity .3s}
-.modal-overlay.active{opacity:1;pointer-events:auto}
-.modal-content{background:var(--panel);border:1px solid var(--line);max-width:800px;width:100%;max-height:90vh;overflow-y:auto;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.8)}
-.modal-close{position:absolute;top:14px;right:14px;background:var(--red);border:none;color:#000;font-family:var(--black);font-size:14px;width:36px;height:36px;border-radius:50%;cursor:pointer;z-index:3;transition:.2s}
-.modal-close:hover{transform:scale(1.1);background:var(--magenta)}
-.modal-body{padding:clamp(20px,4vw,34px)}
-.modal-hero{position:relative;margin-bottom:clamp(16px,3vw,24px);overflow:hidden}
-.modal-hero img{width:100%;height:auto;max-height:400px;object-fit:cover}
-.modal-cat{display:inline-block;font-family:var(--black);font-size:clamp(9px,1.4vw,11px);letter-spacing:2px;padding:6px 10px;color:#000;margin-bottom:14px}
-.modal-title{font-family:var(--display);font-size:clamp(28px,5vw,48px);line-height:1;letter-spacing:1px;margin-bottom:12px;text-shadow:2px 2px 0 var(--magenta)}
-.modal-meta{font-size:clamp(10px,1.5vw,12px);letter-spacing:1px;color:var(--dim);margin-bottom:clamp(16px,2vw,24px);padding-bottom:14px;border-bottom:1px solid var(--line)}
-.modal-meta b{color:var(--cyan);font-weight:400}
-.modal-summary{font-size:clamp(13px,1.7vw,15px);line-height:1.7;color:#d0d0dd}
-.modal-subtitle{font-family:var(--marker);color:var(--acid);font-size:clamp(14px,2.4vw,18px);margin-bottom:12px;transform:rotate(-1deg)}
-@media(max-width:600px){.modal-content{max-height:100vh;border-radius:0}}
-
 /* ---------- footer ---------- */
 footer{border-top:1px solid var(--line);background:#05050a;margin-top:20px}
 .foot-in{max-width:1440px;margin:0 auto;padding:var(--sp-5) var(--pad-x) var(--sp-4)}
@@ -397,21 +380,6 @@ footer{border-top:1px solid var(--line);background:#05050a;margin-top:20px}
 
   </aside>
 </main>
-
-<!-- ARTICLE MODAL -->
-<div class="modal-overlay" id="articleModal" aria-hidden="true">
-  <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <button class="modal-close" id="modalClose" aria-label="close article"></button>
-    <div class="modal-body">
-      <div class="modal-hero" id="modalHero"></div>
-      <span class="modal-cat" id="modalCat"></span>
-      <h2 class="modal-title" id="modalTitle"></h2>
-      <div class="modal-subtitle" id="modalSubtitle"></div>
-      <div class="modal-meta" id="modalMeta"></div>
-      <div class="modal-summary" id="modalSummary"></div>
-    </div>
-  </div>
-</div>
 
 <!-- FOOTER -->
 <footer>
@@ -700,7 +668,7 @@ function heroHTML(it){
   var stick = hasTag(it,"investigation")
     ? "<span class=\"sticker\" style=\"top:16px;left:14px\">EXCLUSIVE INVESTIGATION</span>"
     : "<span class=\"sticker\" style=\"top:16px;left:14px\">FEATURED</span>";
-  return "<article class=\"card hero searchable\" data-cat=\"" + esc(it.category_slugs[0]||"") + "\" data-title=\"" + esc(searchHay(it)) + \" data-slug=\"" + esc(it.slug||"") + \" data-id=\"" + esc(it.id||"") + "\">"
+  return "<article class=\"card hero searchable\" data-cat=\"" + esc(it.category_slugs[0]||"") + "\" data-title=\"" + esc(searchHay(it)) + "\">"
     + imgHTML(it, it.title) + stick
     + "<div class=\"scribble\">the wire never sleeps." + ARROW_SVG + "</div>"
     + "<div class=\"hero-body\"><span class=\"chip " + chipClass(it.category_slugs[0]) + "\">" + esc(cat) + "</span>"
@@ -711,7 +679,7 @@ function heroHTML(it){
 }
 function duoHTML(it){
   var cat = (it.categories[0] || "Wire").toUpperCase();
-  return "<article class=\"card searchable\" data-cat=\"" + esc(it.category_slugs[0]||"") + "\" data-title=\"" + esc(searchHay(it)) + \" data-slug=\"" + esc(it.slug||"") + \" data-id=\"" + esc(it.id||"") + "\">"
+  return "<article class=\"card searchable\" data-cat=\"" + esc(it.category_slugs[0]||"") + "\" data-title=\"" + esc(searchHay(it)) + "\">"
     + imgHTML(it, it.title)
     + "<div class=\"body\"><span class=\"chip " + chipClass(it.category_slugs[0]) + "\">" + esc(cat) + "</span>"
     + "<h3>" + esc(it.title) + "</h3>"
@@ -721,7 +689,7 @@ function duoHTML(it){
 }
 function deskHTML(it){
   var cat = (it.categories[0] || "Desk").toUpperCase();
-  return "<article class=\"card searchable\" data-cat=\"" + esc(it.category_slugs[0]||"") + "\" data-title=\"" + esc(searchHay(it)) + \" data-slug=\"" + esc(it.slug||"") + \" data-id=\"" + esc(it.id||"") + "\">"
+  return "<article class=\"card searchable\" data-cat=\"" + esc(it.category_slugs[0]||"") + "\" data-title=\"" + esc(searchHay(it)) + "\">"
     + imgHTML(it, it.title)
     + "<div class=\"body\"><span class=\"chip " + chipClass(it.category_slugs[0]) + "\">" + esc(cat) + "</span>"
     + "<h3>" + esc(it.title) + "</h3>"
@@ -731,14 +699,14 @@ function deskHTML(it){
 }
 function opinionHTML(it){
   var who = (it.creators[0] && it.creators[0].name) ? it.creators[0].name.toUpperCase() : "THE DESK";
-  return "<article class=\"opinion searchable\" data-cat=\"" + esc(it.category_slugs[0]||"") + "\" data-title=\"" + esc(searchHay(it)) + \" data-slug=\"" + esc(it.slug||"") + \" data-id=\"" + esc(it.id||"") + "\">"
+  return "<article class=\"opinion searchable\" data-cat=\"" + esc(it.category_slugs[0]||"") + "\" data-title=\"" + esc(searchHay(it)) + "\">"
     + "<span class=\"sticker\" style=\"top:-14px;right:20px;background:var(--magenta);color:#000\">OP-ED</span>"
     + "<div class=\"q\">\"" + esc(it.summary || it.title) + "\"</div>"
     + "<div class=\"who\">� " + esc(who) + "<br><span style=\"color:var(--cyan)\">" + esc(it.subtitle || "") + "</span></div>"
     + "</article>";
 }
 function zineHTML(it){
-  return "<article class=\"zine searchable\" data-cat=\"" + esc(it.category_slugs[0]||"") + "\" data-title=\"" + esc(searchHay(it)) + \" data-slug=\"" + esc(it.slug||"") + \" data-id=\"" + esc(it.id||"") + "\">"
+  return "<article class=\"zine searchable\" data-cat=\"" + esc(it.category_slugs[0]||"") + "\" data-title=\"" + esc(searchHay(it)) + "\">"
     + "<span class=\"zk\">" + esc(it.subtitle || "FREQUENCY") + "</span>"
     + (it.image_url ? "<div class=\"ph\"><img src=\"" + esc(it.image_url) + "\" alt=\"" + esc(it.image_alt || it.title) + "\"></div>" : "")
     + "<div class=\"zt\">" + esc(it.title) + "</div>"
@@ -797,9 +765,6 @@ function renderFeed(items, mode){
   var heroItem = null, duoArr = [], deskArr = [], opEd = null, freqArr = [], trendArr = [];
   function key(it){ return it.slug || it.id; }
   function take(it){ assigned[key(it)] = true; }
-
-  // Store all items in a global array for modal lookup
-  window.GRIOT_ARTICLES = items.slice();
 
   items.forEach(function(it){
     if(!heroItem && it.featured && it.pinned){ heroItem = it; take(it); }
@@ -975,78 +940,6 @@ slotTrending.addEventListener("click", function(ev){
   if(!item){ return; }
   item.style.transform = "translateX(10px) scale(.98)";
   setTimeout(function(){ item.style.transform = ""; }, 180);
-});
-
-/* ------------------------- article modal ------------------------- */
-var modalOverlay = document.getElementById("articleModal"),
-    modalClose = document.getElementById("modalClose"),
-    modalHero = document.getElementById("modalHero"),
-    modalCat = document.getElementById("modalCat"),
-    modalTitle = document.getElementById("modalTitle"),
-    modalSubtitle = document.getElementById("modalSubtitle"),
-    modalMeta = document.getElementById("modalMeta"),
-    modalSummary = document.getElementById("modalSummary"),
-    currentArticle = null;
-
-function openArticle(article){
-  if(!article){ return; }
-  currentArticle = article;
-  var cat = (article.categories[0] || "Article").toUpperCase();
-  modalHero.innerHTML = article.image_url ? "<img src=\"" + esc(article.image_url) + "\" alt=\"" + esc(article.image_alt || article.title) + "\">" : "";
-  modalCat.className = "modal-cat " + chipClass(article.category_slugs[0]);
-  modalCat.textContent = cat;
-  modalTitle.textContent = article.title;
-  modalSubtitle.textContent = article.subtitle || "";
-  modalSubtitle.style.display = article.subtitle ? "" : "none";
-  modalMeta.innerHTML = "BY " + bylineHTML(article.creators) + "  " + fmtDate(article.published_at);
-  modalSummary.textContent = article.summary || "";
-  modalOverlay.classList.add("active");
-  modalOverlay.setAttribute("aria-hidden", "false");
-  document.body.style.overflow = "hidden";
-}
-
-function closeModal(){
-  modalOverlay.classList.remove("active");
-  modalOverlay.setAttribute("aria-hidden", "true");
-  document.body.style.overflow = "";
-  currentArticle = null;
-}
-
-modalClose.addEventListener("click", closeModal);
-modalOverlay.addEventListener("click", function(ev){
-  if(ev.target === modalOverlay){ closeModal(); }
-});
-document.addEventListener("keydown", function(ev){
-  if(ev.key === "Escape" && modalOverlay.classList.contains("active")){ closeModal(); }
-});
-
-// Add click handlers to all article cards
-document.addEventListener("click", function(ev){
-  var card = ev.target.closest(".card.searchable, .opinion.searchable, .zine.searchable");
-  if(!card){ return; }
-  var slug = card.getAttribute("data-slug");
-  var id = card.getAttribute("data-id");
-  if(!slug && !id){ return; }
-  
-  // Find the article in live feed first, then fallback to LOCAL_WIRE
-  var article = null;
-  if(window.GRIOT_ARTICLES){
-    for(var i = 0; i < window.GRIOT_ARTICLES.length; i++){
-      if((window.GRIOT_ARTICLES[i].slug === slug) || (window.GRIOT_ARTICLES[i].id === id)){
-        article = window.GRIOT_ARTICLES[i];
-        break;
-      }
-    }
-  }
-  if(!article){
-    for(var j = 0; j < LOCAL_WIRE.length; j++){
-      if((LOCAL_WIRE[j].slug === slug) || (LOCAL_WIRE[j].id === id)){
-        article = LOCAL_WIRE[j];
-        break;
-      }
-    }
-  }
-  if(article){ openArticle(article); }
 });
 
 /* ------------------------- clocks ------------------------- */
